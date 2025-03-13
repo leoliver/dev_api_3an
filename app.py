@@ -18,5 +18,51 @@ dici = {
         ]
 }
 
+def getNextId(list):
+    lastIndex = list[-1]
+    nextId = lastIndex["id"] + 1
+    return nextId
+
+#ROTAS DE ALUNO
+
+@app.route("/alunos", methods=["GET"])
+def getAlunos():
+    dados = dici["alunos"]
+    return jsonify(dados)
+
+@app.route("/alunos/<int:idAluno>", methods=["GET"])
+def getAlunoById(idAluno):
+    alunos = dici["alunos"]
+    for aluno in alunos:
+        if aluno["id"] == idAluno:
+            return jsonify(aluno)
+
+@app.route("/alunos", methods=["POST"])
+def createAluno():
+    dados = request.json
+    alunos = dici["alunos"]
+    dados["id"] = getNextId(alunos)
+    alunos.append(dados)
+    return dados
+
+@app.route("/alunos/<int:idAluno>", methods=["PUT"])
+def updateAluno(idAluno):
+    alunos = dici["alunos"]
+    for aluno in alunos:
+        if aluno["id"] == idAluno:
+            dados = request.json
+            chaves = dados.keys()
+            for chave in chaves:
+                aluno[chave] = dados[chave]
+            return dados
+
+@app.route("/alunos/<int:idAluno>", methods=["DELETE"])
+def deleteAluno(idAluno):
+    alunos = dici["alunos"]
+    for aluno in alunos:
+        if aluno["id"] == idAluno:
+            alunos.remove(aluno)
+            return aluno
+
 if __name__ == "__main__":
     app.run(debug=True)
