@@ -64,5 +64,46 @@ def deleteAluno(idAluno):
             alunos.remove(aluno)
             return aluno
 
+#ROTAS DE PROFESSOR
+
+@app.route("/professores", methods = ["GET"])
+def getProfessor():
+    dados = dici["professores"]
+    return jsonify(dados)
+
+@app.route("/professores/<int:idProf>", methods=["GET"])
+def getProfessorById(idProf):
+    professores = dici["professores"]
+    for professor in professores:
+        if professor["id"] == idProf:
+            return jsonify(professor)
+        
+@app.route("/professores", methods=["POST"])
+def createProfessor():
+    dados = request.json
+    professores = dici["professores"]
+    dados["id"] = getNextId(professores)
+    professores.append(dados)
+    return dados
+
+@app.route("/professores/<int:idProf>", methods=["PUT"])
+def updateProfessor(idProf):
+    professores = dici["professores"]
+    for professor in professores:
+        if professor["id"] == idProf:
+            dados = request.json
+            chaves = dados.keys()
+            for chave in chaves:
+                professor[chave] = dados[chave]
+            return dados
+
+@app.route("/professores/<int:idProf>", methods=["DELETE"])
+def deleteProfessor(idProf):
+    professores = dici["professores"]
+    for professor in professores:
+        if professor["id"] == idProf:
+            professores.remove(professor)
+            return professor
+
 if __name__ == "__main__":
     app.run(debug=True)
