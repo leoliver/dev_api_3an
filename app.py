@@ -104,6 +104,47 @@ def deleteProfessor(idProf):
         if professor["id"] == idProf:
             professores.remove(professor)
             return professor
+        
+#ROTAS DE TURMA
+
+@app.route("/turmas", methods=["GET"])
+def getTurmas():
+    dados = dici["turmas"]
+    return jsonify(dados)
+
+@app.route("/turmas/<int:idTurma>", methods=["GET"])
+def getTurmaById(idTurma):
+    turmas = dici["turmas"]
+    for turma in turmas:
+        if turma["id"] == idTurma:
+            return jsonify(turma)
+
+@app.route("/turmas", methods=["POST"])
+def createTurma():
+    dados = request.json
+    turmas = dici["turmas"]
+    dados["id"] = getNextId(turmas)
+    turmas.append(dados)
+    return dados
+
+@app.route("/turmas/<int:idTurma>", methods=["PUT"])
+def updateTurma(idTurma):
+    turmas = dici["turmas"]
+    for turma in turmas:
+        if turma["id"] == idTurma:
+            dados = request.json
+            chaves = dados.keys()
+            for chave in chaves:
+                turma[chave] = dados[chave]
+            return dados
+
+@app.route("/turmas/<int:idTurma>", methods=["DELETE"])
+def deleteTurma(idTurma):
+    turmas = dici["turmas"]
+    for turma in turmas:
+        if turma["id"] == idTurma:
+            turmas.remove(turma)
+            return turma
 
 if __name__ == "__main__":
     app.run(debug=True)
