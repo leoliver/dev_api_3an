@@ -19,6 +19,10 @@ class TestStringMethods(unittest.TestCase):
     def test_001_alunos_procura_id(self):
          r = requests.get('http://localhost:5000/alunos/1')
          resposta = r.json()
+    def test_002_alunos_criacao(self):
+         r = requests.post('http://localhost:5000/alunos', json={"nome": "hiago", "idade": 35, "data_nascimento": "Tem tempo", "nota_primeiro_semestre": 0, "nota_segundo_semestre": 0, "media_final": 0, "turma_id": 1})
+         resposta = requests.get('http://localhost:5000/alunos/5')
+         retorno = resposta.json()
 
 def runTests():
         suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestStringMethods)
