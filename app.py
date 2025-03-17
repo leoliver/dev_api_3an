@@ -38,12 +38,24 @@ dici = {
          "turma_id": 1}
         ],
     "professores":[
-        {"id": 1, "nome":"Caio", "disciplina":"Desenvolvimento de API"},
-        {"id": 2, "nome":"Kleber", "disciplina":"DevOps"}
+        {"id": 1, 
+         "nome":"Caio", 
+         "data_nascimento":"04/05/1995",
+         "disciplina":"Desenvolvimento de API",
+         "salario": 1000},
+        {"id": 2, 
+         "nome":"Kleber", 
+         "data_nascimento":"10/07/1995",
+         "disciplina":"DevOps",
+         "salario": 2000}
         ],
     "turma":[
-        {"id": 1, "nome": "DevOps", "turno": "Noite"},
-        {"id": 2, "nome": "Desenvolvimento de API", "turno": "Manhã"}
+        {"id": 1, 
+         "nome": "DevOps", 
+         "turno": "Noite"},
+        {"id": 2, 
+         "nome": "Desenvolvimento de API", 
+         "turno": "Manhã"}
         ]
 }
 
