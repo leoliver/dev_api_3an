@@ -44,7 +44,9 @@ class TestStringMethods(unittest.TestCase):
             self.fail("queria um json mas voce retornou outra coisa")
 
         self.assertEqual(type(retorno),type([])) 
-
+    def test_101_professores_procura_id(self):
+         r = requests.get('http://localhost:5000/professores/1')
+         resposta = r.json()
 def runTests():
         suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestStringMethods)
         unittest.TextTestRunner(verbosity=2,failfast=True).run(suite)
