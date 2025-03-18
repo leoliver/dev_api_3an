@@ -94,7 +94,8 @@ def updateAluno(idAluno):
             dados = request.json
             chaves = dados.keys()
             for chave in chaves:
-                aluno[chave] = dados[chave]
+                if not aluno[chave] == dados[chave]:
+                    aluno[chave] = dados[chave]
             return dados
 
 @app.route("/alunos/<int:idAluno>", methods=["DELETE"])
