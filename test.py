@@ -168,6 +168,22 @@ class TestStringMethods(unittest.TestCase):
                     self.fail("Página /turmas/id não definida no servidor para o método GET.")
 
           self.assertEqual(retorno['id'],1)
+     
+     def test_202_adiciona_turma(self):
+          req_turmas = requests.post('http://127.0.0.1:5000/turmas',json={"nome": "Engenharia de Requisitos", "turno": "Manhã", "id_professor": 3})
+          req_turmas2 = requests.get('http://127.0.0.1:5000/turmas')
+          if req_turmas.status_code == 404:
+                    self.fail("Página /turmas não definida no servidor para o método POST.")
+
+          lista_turmas = req_turmas2.json()
+          achei = False
+
+          for turma in lista_turmas:
+               if turma["nome"] == "Engenharia de Requisitos":
+                    achei = True
+
+          if not achei:
+               self.fail("Não achei o objeto adicionado.")          
 
 
      
