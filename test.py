@@ -32,6 +32,19 @@ class TestStringMethods(unittest.TestCase):
          resposta = requests.get('http://localhost:5000/alunos')
          retorno = resposta.json()
 
+    def test_100_professores_retorna_lista(self):
+        r = requests.get('http://localhost:5000/professores')
+
+        if r.status_code == 404:
+            self.fail("voce nao definiu a pagina /professores no seu server")
+
+        try:
+            retorno = r.json()
+        except:
+            self.fail("queria um json mas voce retornou outra coisa")
+
+        self.assertEqual(type(retorno),type([])) 
+
 def runTests():
         suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestStringMethods)
         unittest.TextTestRunner(verbosity=2,failfast=True).run(suite)
