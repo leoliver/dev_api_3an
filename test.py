@@ -160,6 +160,14 @@ class TestStringMethods(unittest.TestCase):
                self.fail("Seu objeto não foi convertido para Json.")
           
           self.assertEqual(type(retorno), type([]))
+     
+     def test_201_busca_turma_por_ID(self):
+          req_turmas = requests.get('http://127.0.0.1:5000/turmas/1')
+          retorno = req_turmas.json()
+          if req_turmas.status_code == 404:
+                    self.fail("Página /turmas/id não definida no servidor para o método GET.")
+
+          self.assertEqual(retorno['id'],1)
 
 
      
