@@ -51,6 +51,10 @@ class TestStringMethods(unittest.TestCase):
          r = requests.post('http://localhost:5000/professores', json={'nome': 'Sidinei', 'data_nascimento': '07/08/1994', 'disciplina':'Matematica', 'salario': 3000})
          resposta = requests.get('http://localhost:5000/professores/3')
          retorno = resposta.json()
+    def test_103_professores_atualiza_dados_id(self):
+         r = requests.put('http://localhost:5000/professores/2', json={'disciplina':'Desenvolvimento de API'})
+         resposta = requests.get('http://localhost:5000/professores/2')
+         retorno = resposta.json()
 def runTests():
         suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestStringMethods)
         unittest.TextTestRunner(verbosity=2,failfast=True).run(suite)
