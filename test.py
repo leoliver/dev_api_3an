@@ -203,11 +203,23 @@ class TestStringMethods(unittest.TestCase):
 
           retorno = req_turmas_att.json()
 
+     def test_204_deleta_turma(self):
+          req_turmas = requests.post('http://127.0.0.1:5000/turmas', json={"nome": "Engenharia de Requisitos", "turno": "Manhã", "id_professor":2})
+          req_turmas3 = requests.delete('http://127.0.0.1:5000/turmas/4')
+          req_turmas2 = requests.get('http://127.0.0.1:5000/turmas')
+          if req_turmas.status_code == 404:
+                    self.fail("Página /turmas não definida no servidor para o método DELETE.")
 
+          lista_turmas = req_turmas2.json()
+          deletado = True
 
-     
-
+          for turma in lista_turmas:
+               if turma["id"] == 4:
+                    deletado = False
           
+          if not deletado:
+               self.fail("A turma não foi deletada.")     
+                        
 
 def runTests():
         suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestStringMethods)
