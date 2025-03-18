@@ -47,6 +47,10 @@ class TestStringMethods(unittest.TestCase):
     def test_101_professores_procura_id(self):
          r = requests.get('http://localhost:5000/professores/1')
          resposta = r.json()
+    def test_102_professores_criacao(self):
+         r = requests.post('http://localhost:5000/professores', json={'nome': 'Sidinei', 'disciplina':'Matematica'})
+         resposta = requests.get('http://localhost:5000/professores/3')
+         retorno = resposta.json()
 def runTests():
         suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestStringMethods)
         unittest.TextTestRunner(verbosity=2,failfast=True).run(suite)
