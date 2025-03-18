@@ -183,7 +183,26 @@ class TestStringMethods(unittest.TestCase):
                     achei = True
 
           if not achei:
-               self.fail("Não achei o objeto adicionado.")          
+               self.fail("Não achei o objeto adicionado.")        
+
+     def test_203_atualiza_turma(self):
+          req_turmas = requests.put('http://127.0.0.1:5000/turmas/1', json = {"nome": "Lógica de Programação"})
+          req_turmas_att = requests.get('http://127.0.0.1:5000/turmas')
+          if req_turmas.status_code == 404:
+                    self.fail("Página /turmas não definida no servidor para o método PUT.")
+
+          retorno = req_turmas_att.json()
+          atualizado = False
+
+          for turma in retorno:
+               if turma["nome"] == "Lógica de Programação":
+                    atualizado = True
+               
+          if not atualizado:
+               self.fail("Disciplina não atualizada.")
+
+          retorno = req_turmas_att.json()
+
 
 
      
