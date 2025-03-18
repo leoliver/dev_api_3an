@@ -55,6 +55,9 @@ class TestStringMethods(unittest.TestCase):
          r = requests.put('http://localhost:5000/professores/2', json={'disciplina':'Desenvolvimento de API'})
          resposta = requests.get('http://localhost:5000/professores/2')
          retorno = resposta.json()
+    def test_104_professores_delete_id(self):
+         r = requests.delete('http://localhost:5000/professores/1')
+         resposta = requests.get('http://localhost:5000/professores')
 def runTests():
         suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestStringMethods)
         unittest.TextTestRunner(verbosity=2,failfast=True).run(suite)
