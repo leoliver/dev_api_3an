@@ -49,14 +49,16 @@ dici = {
          "disciplina":"DevOps",
          "salario": 2000}
         ],
-    "turma":[
+    "turmas":[
         {"id": 1, 
          "nome": "DevOps", 
-         "turno": "Noite"},
+         "turno": "Noite",
+         "id_professor": 2},
         {"id": 2, 
          "nome": "Desenvolvimento de API", 
-         "turno": "Manhã"}
-        ]
+         "turno": "Manhã",
+         "id_professor": 1},
+        ],
 }
 
 def getNextId(list):
