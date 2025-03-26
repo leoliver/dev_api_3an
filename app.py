@@ -1,112 +1,43 @@
 from flask import Flask, jsonify, request
+import model
 
 app = Flask(__name__)
-
-dici = {
-    "alunos":[
-        {"id": 1,
-         "nome": "Sid",
-         "idade": 28,
-         "data_nascimento": "ontem",
-         "nota_primeiro_semestre": 0,
-         "nota_segundo_semestre": 0,
-         "media_final": 0,
-         "turma_id": 1},
-        {"id": 2,
-         "nome": "Leonardo",
-         "idade": 23,
-         "data_nascimento": "anteontem",
-         "nota_primeiro_semestre": 0,
-         "nota_segundo_semestre": 0,
-         "media_final": 0,
-         "turma_id": 1},
-        {"id": 3,
-         "nome": "Joana",
-         "idade": 23,
-         "data_nascimento": "há um tempo",
-         "nota_primeiro_semestre": 0,
-         "nota_segundo_semestre": 0,
-         "media_final": 0,
-         "turma_id": 1},
-        {"id": 4,
-         "nome": "Renoir",
-         "idade": 19,
-         "data_nascimento": "Amanhã",
-         "nota_primeiro_semestre": 0,
-         "nota_segundo_semestre": 0,
-         "media_final": 0,
-         "turma_id": 1}
-        ],
-    "professores":[
-        {"id": 1, 
-         "nome":"Caio", 
-         "data_nascimento":"04/05/1995",
-         "disciplina":"Desenvolvimento de API",
-         "salario": 1000},
-        {"id": 2, 
-         "nome":"Kleber", 
-         "data_nascimento":"10/07/1995",
-         "disciplina":"DevOps",
-         "salario": 2000}
-        ],
-    "turmas":[
-        {"id": 1, 
-         "nome": "DevOps", 
-         "turno": "Noite",
-         "id_professor": 2},
-        {"id": 2, 
-         "nome": "Desenvolvimento de API", 
-         "turno": "Manhã",
-         "id_professor": 1},
-        ],
-}
-
-def getNextId(list):
-    lastIndex = list[-1]
-    nextId = lastIndex["id"] + 1
-    return nextId
 
 #ROTAS DE ALUNO
 
 @app.route("/alunos", methods=["GET"])
 def getAlunos():
-    dados = dici["alunos"]
-    return jsonify(dados)
+    return model.lista_alunos()
 
 @app.route("/alunos/<int:idAluno>", methods=["GET"])
 def getAlunoById(idAluno):
-    alunos = dici["alunos"]
-    for aluno in alunos:
-        if aluno["id"] == idAluno:
-            return jsonify(aluno)
+    try:
+        return model.aluno_por_id(idAluno)
+    except model.AlunoNaoEncontrado:
+        return {"erro": "Aluno não encontrado", "codigo": 400}
 
 @app.route("/alunos", methods=["POST"])
 def createAluno():
     dados = request.json
-    alunos = dici["alunos"]
-    dados["id"] = getNextId(alunos)
-    alunos.append(dados)
-    return dados
+    model.adiciona_aluno(dados)
+    return model.lista_alunos()
 
 @app.route("/alunos/<int:idAluno>", methods=["PUT"])
 def updateAluno(idAluno):
-    alunos = dici["alunos"]
-    for aluno in alunos:
-        if aluno["id"] == idAluno:
-            dados = request.json
-            chaves = dados.keys()
-            for chave in chaves:
-                if not aluno[chave] == dados[chave]:
-                    aluno[chave] = dados[chave]
-            return dados
+    dados = request.json
+    try:
+        model.atualiza_aluno(idAluno, dados)
+        return model.aluno_por_id(idAluno)
+    except model.AlunoNaoEncontrado:
+        return {"erro": "Aluno não encontrado", "codigo": 400}
 
 @app.route("/alunos/<int:idAluno>", methods=["DELETE"])
 def deleteAluno(idAluno):
-    alunos = dici["alunos"]
-    for aluno in alunos:
-        if aluno["id"] == idAluno:
-            alunos.remove(aluno)
-            return aluno
+    try:
+        model.remove_aluno(idAluno)
+        return model.lista_alunos() 
+    except model.AlunoNaoEncontrado:
+        return {"erro": "Aluno não encontrado", "codigo": 400}
 
 #ROTAS DE PROFESSOR
 
