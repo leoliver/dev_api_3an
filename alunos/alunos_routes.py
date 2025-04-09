@@ -30,3 +30,11 @@ def updatealuno(idAluno):
         return jsonify(aluno)
     except AlunosNaoEncontrados:
         return jsonify({"erro": "Aluno nao encontrado"})
+    
+@alunos_blueprint.route('/alunos/<int:idAluno>', methods=['DELETE'])
+def deletealuno(idAluno):
+    try:
+        deleteAluno(idAluno)
+        return jsonify({"sucesso": "Aluno deletado com sucesso"})
+    except AlunosNaoEncontrados:
+        return jsonify({"erro": "Aluno nao encontrado"})
