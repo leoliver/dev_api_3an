@@ -15,3 +15,7 @@ dici = {
 
 class TurmasNaoEncontradas(Exception):    
     pass
+
+def getTurmas():
+    turmas = dici["turmas"]
+    return turmas
