@@ -19,3 +19,10 @@ class TurmasNaoEncontradas(Exception):
 def getTurmas():
     turmas = dici["turmas"]
     return turmas
+
+def getTurmaById(idTurma):
+    turmas = dici["turmas"]
+    for turma in turmas:
+        if turma["id"] == idTurma:
+            return turma
+    raise TurmasNaoEncontradas
