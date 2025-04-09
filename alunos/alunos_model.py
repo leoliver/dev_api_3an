@@ -55,3 +55,8 @@ def createAluno(dados):
     dados['id'] = getNextId(lista_alunos)
     lista_alunos.append(dados)
     return dici["alunos"]
+
+def updateAluno(idAluno, dados):
+    aluno = getAlunoById(idAluno)
+    aluno.update(dados)
+    return
