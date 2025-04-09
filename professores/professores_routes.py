@@ -21,3 +21,12 @@ def create_professor():
     dados = request.json
     professor = createProfessor(dados)
     return jsonify(professor)
+
+@professores_blueprint.route('/professores/<int:idProfessor>', methods=['PUT'])
+def update_professor(idProfessor):
+    dados = request.json
+    try:
+        professor = updateProfessor(idProfessor, dados)
+        return jsonify(professor)
+    except ProfessoresNaoEncontrados:
+        return jsonify({"erro": "Professor nao encontrado"})

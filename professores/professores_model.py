@@ -33,3 +33,8 @@ def createProfessor(dados):
     dados['id'] = getNextId(lista_professores)
     lista_professores.append(dados)
     return dici["professores"]
+
+def updateProfessor(id_professor, dados):
+    professor = getProfessorById(id_professor)
+    professor.update(dados)
+    return
