@@ -21,3 +21,12 @@ def createaluno():
     dados = request.json
     aluno = createAluno(dados)
     return jsonify(aluno)
+
+@alunos_blueprint.route('/alunos/<int:idAluno>', methods=['PUT'])
+def updatealuno(idAluno):
+    dados = request.json
+    try:
+        aluno = updateAluno(idAluno, dados)
+        return jsonify(aluno)
+    except AlunosNaoEncontrados:
+        return jsonify({"erro": "Aluno nao encontrado"})
