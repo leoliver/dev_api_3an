@@ -36,3 +36,16 @@ dici = {
          "turma_id": 1}
         ],
 }
+
+class AlunosNaoEncontrados(Exception):
+    pass
+
+def getAlunos():
+    return dici["alunos"]
+
+def getAlunoById(idAluno):
+    alunos = dici["alunos"]
+    for aluno in alunos:
+        if aluno["id"] == idAluno:
+            return aluno
+    raise AlunosNaoEncontrados
