@@ -1,0 +1,16 @@
+from auxiliar import *
+
+dici = {
+    "professores":[
+        {"id": 1, 
+         "nome":"Caio", 
+         "data_nascimento":"04/05/1995",
+         "disciplina":"Desenvolvimento de API",
+         "salario": 1000},
+        {"id": 2, 
+         "nome":"Kleber", 
+         "data_nascimento":"10/07/1995",
+         "disciplina":"DevOps",
+         "salario": 2000}
+        ]
+}
