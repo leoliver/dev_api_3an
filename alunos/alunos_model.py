@@ -60,3 +60,10 @@ def updateAluno(idAluno, dados):
     aluno = getAlunoById(idAluno)
     aluno.update(dados)
     return
+
+def deleteAluno(idAluno):
+    alunos = getAlunos()
+    for aluno in alunos:
+        if aluno["id"] == idAluno:
+            alunos.remove(aluno)
+            return
