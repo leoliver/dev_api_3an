@@ -21,3 +21,12 @@ def create_turma():
     dados = request.json
     turma = createTurma(dados)
     return jsonify(turma)
+
+@turmas_blueprint.route('/turmas/<int:idTurma>', methods=['PUT'])
+def update_turma(idTurma):
+    dados = request.json
+    try:
+        turma = updateTurma(idTurma, dados)
+        return jsonify(turma)
+    except TurmasNaoEncontradas:
+        return jsonify({"erro": "Turma nao encontrada"})

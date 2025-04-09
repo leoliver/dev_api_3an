@@ -32,3 +32,8 @@ def createTurma(dados):
     dados["id"] = getNextId(lista_turmas)
     lista_turmas.append(dados)
     return dici["turmas"]
+
+def updateTurma(idTurma, dados):
+    turma = getTurmaById(idTurma)
+    turma.update(dados)
+    return
