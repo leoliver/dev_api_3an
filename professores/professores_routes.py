@@ -30,3 +30,11 @@ def update_professor(idProfessor):
         return jsonify(professor)
     except ProfessoresNaoEncontrados:
         return jsonify({"erro": "Professor nao encontrado"})
+    
+@professores_blueprint.route('/professores/<int:idProfessor>', methods=['DELETE'])
+def delete_professor(idProfessor):
+    try:
+        deleteProfessor(idProfessor)
+        return jsonify({"sucesso": "Professor deletado com sucesso"})
+    except ProfessoresNaoEncontrados:
+        return jsonify({"erro": "Professor nao encontrado"})

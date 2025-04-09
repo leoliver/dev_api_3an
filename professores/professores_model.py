@@ -38,3 +38,10 @@ def updateProfessor(id_professor, dados):
     professor = getProfessorById(id_professor)
     professor.update(dados)
     return
+
+def deleteProfessor(id_professor):
+    professores = getProfessores()
+    for professor in professores:
+        if professor["id"] == id_professor:
+            professores.remove(professor)
+            return
