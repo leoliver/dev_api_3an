@@ -49,3 +49,9 @@ def getAlunoById(idAluno):
         if aluno["id"] == idAluno:
             return aluno
     raise AlunosNaoEncontrados
+
+def createAluno(dados):
+    lista_alunos = getAlunos()
+    dados['id'] = getNextId(lista_alunos)
+    lista_alunos.append(dados)
+    return dici["alunos"]
