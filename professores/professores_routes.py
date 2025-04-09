@@ -15,3 +15,9 @@ def get_professor_by_id(idProfessor):
         return jsonify(professor)
     except ProfessoresNaoEncontrados:
         return jsonify({"erro": "Professor nao encontrado"})
+    
+@professores_blueprint.route('/professores', methods=['POST'])
+def create_professor():
+    dados = request.json
+    professor = createProfessor(dados)
+    return jsonify(professor)

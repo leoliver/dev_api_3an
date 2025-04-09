@@ -27,3 +27,9 @@ def getProfessorById(id_professor):
         if professor["id"] == id_professor:
             return professor
     raise ProfessoresNaoEncontrados
+
+def createProfessor(dados):
+    lista_professores = getProfessores()
+    dados['id'] = getNextId(lista_professores)
+    lista_professores.append(dados)
+    return dici["professores"]
