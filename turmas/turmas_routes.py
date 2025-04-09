@@ -15,3 +15,9 @@ def get_turma_by_id(idTurma):
         return jsonify(turma)
     except TurmasNaoEncontradas:
         return jsonify({"erro": "Turma nao encontrada"})
+
+@turmas_blueprint.route('/turmas', methods=['POST'])
+def create_turma():
+    dados = request.json
+    turma = createTurma(dados)
+    return jsonify(turma)

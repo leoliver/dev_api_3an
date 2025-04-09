@@ -26,3 +26,9 @@ def getTurmaById(idTurma):
         if turma["id"] == idTurma:
             return turma
     raise TurmasNaoEncontradas
+
+def createTurma(dados):
+    lista_turmas = getTurmas()
+    dados["id"] = getNextId(lista_turmas)
+    lista_turmas.append(dados)
+    return dici["turmas"]
