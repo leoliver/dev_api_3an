@@ -30,7 +30,7 @@ class TestStringMethods(unittest.TestCase):
           self.assertEqual(type(aluno),type({}))
 
      def test_002_alunos_criacao(self):
-          r = requests.post('http://localhost:5000/alunos', json={"nome": "Hiago", "idade": 35, "data_nascimento": "Tem tempo", "nota_primeiro_semestre": 0, "nota_segundo_semestre": 0, "media_final": 0, "turma_id": 4})
+          r = requests.post('http://localhost:5000/alunos', json={"nome": "Hiago", "idade": 35, "data_nascimento": "Tem tempo", "nota_primeiro_semestre": 0, "nota_segundo_semestre": 0, "media_final": 0, "turma_id": 1})
 
           if r.status_code == 404:
                self.fail("Página /alunos não definida no servidor para o método POST.")
