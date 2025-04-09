@@ -37,3 +37,10 @@ def updateTurma(idTurma, dados):
     turma = getTurmaById(idTurma)
     turma.update(dados)
     return
+
+def deleteTurma(idTurma):
+    turmas = getTurmas()
+    for turma in turmas:
+        if turma["id"] == idTurma:
+            turmas.remove(turma)
+            return

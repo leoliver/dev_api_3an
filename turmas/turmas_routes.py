@@ -30,3 +30,11 @@ def update_turma(idTurma):
         return jsonify(turma)
     except TurmasNaoEncontradas:
         return jsonify({"erro": "Turma nao encontrada"})
+    
+@turmas_blueprint.route('/turmas/<int:idTurma>', methods=['DELETE'])
+def delete_turma(idTurma):
+    try:
+        deleteTurma(idTurma)
+        return jsonify({"sucesso": "Turma deletada com sucesso"})
+    except TurmasNaoEncontradas:
+        return jsonify({"erro": "Turma nao encontrada"})
