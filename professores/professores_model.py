@@ -20,3 +20,10 @@ class ProfessoresNaoEncontrados(Exception):
 
 def getProfessores():
     return dici["professores"]
+
+def getProfessorById(id_professor):
+    professores = dici["professores"]
+    for professor in professores:
+        if professor["id"] == id_professor:
+            return professor
+    raise ProfessoresNaoEncontrados

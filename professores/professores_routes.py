@@ -7,3 +7,11 @@ professores_blueprint = Blueprint('professores', __name__)
 def get_professores():
     professores = getProfessores()
     return jsonify(professores)
+
+@professores_blueprint.route('/professores/<int:idProfessor>', methods=['GET'])
+def get_professor_by_id(idProfessor):
+    try:
+        professor = getProfessorById(idProfessor)
+        return jsonify(professor)
+    except ProfessoresNaoEncontrados:
+        return jsonify({"erro": "Professor nao encontrado"})
