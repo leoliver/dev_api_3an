@@ -14,3 +14,9 @@ dici = {
          "salario": 2000}
         ]
 }
+
+class ProfessoresNaoEncontrados(Exception):
+    pass
+
+def getProfessores():
+    return dici["professores"]
