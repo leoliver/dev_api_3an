@@ -1,4 +1,5 @@
 from auxiliar import *
+from turmas.turmas_model import TurmasNaoEncontradas, getTurmas
 
 dici = {
     "alunos":[
@@ -53,8 +54,12 @@ def getAlunoById(idAluno):
 def createAluno(dados):
     lista_alunos = getAlunos()
     dados['id'] = getNextId(lista_alunos)
-    lista_alunos.append(dados)
-    return dici["alunos"]
+    for turma in getTurmas():
+        if turma['id'] == dados['turma_id']:
+            lista_alunos.append(dados)
+            return dici["alunos"] 
+    raise TurmasNaoEncontradas
+    
 
 def updateAluno(idAluno, dados):
     aluno = getAlunoById(idAluno)

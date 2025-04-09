@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from .alunos_model import AlunosNaoEncontrados, deleteAluno, getAlunoById, getAlunos, updateAluno, createAluno
+from turmas.turmas_model import TurmasNaoEncontradas
 
 alunos_blueprint = Blueprint('alunos', __name__)
 
@@ -18,9 +19,13 @@ def getalunobyid(idAluno):
     
 @alunos_blueprint.route('/alunos', methods=['POST'])
 def createaluno():
-    dados = request.json
-    aluno = createAluno(dados)
-    return jsonify(aluno)
+    try:
+        dados = request.json
+        aluno = createAluno(dados)
+        return jsonify(aluno)
+    except TurmasNaoEncontradas:
+        return jsonify({"erro": "Turma não encontrada"})
+        
 
 @alunos_blueprint.route('/alunos/<int:idAluno>', methods=['PUT'])
 def updatealuno(idAluno):
