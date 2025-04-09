@@ -15,3 +15,9 @@ def getalunobyid(idAluno):
         return jsonify(aluno)
     except AlunosNaoEncontrados:
         return jsonify({"erro": "Aluno nao encontrado"})
+    
+@alunos_blueprint.route('/alunos', methods=['POST'])
+def createaluno():
+    dados = request.json
+    aluno = createAluno(dados)
+    return jsonify(aluno)
