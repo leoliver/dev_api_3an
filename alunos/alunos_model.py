@@ -1,74 +1,118 @@
 from auxiliar import *
 from turmas.turmas_model import TurmasNaoEncontradas, getTurmas
+from config import db
+from datetime import datetime, date
 
-dici = {
-    "alunos":[
-        {"id": 1,
-         "nome": "Sid",
-         "idade": 28,
-         "data_nascimento": "ontem",
-         "nota_primeiro_semestre": 0,
-         "nota_segundo_semestre": 0,
-         "media_final": 0,
-         "turma_id": 1},
-        {"id": 2,
-         "nome": "Leonardo",
-         "idade": 23,
-         "data_nascimento": "anteontem",
-         "nota_primeiro_semestre": 0,
-         "nota_segundo_semestre": 0,
-         "media_final": 0,
-         "turma_id": 1},
-        {"id": 3,
-         "nome": "Joana",
-         "idade": 23,
-         "data_nascimento": "há um tempo",
-         "nota_primeiro_semestre": 0,
-         "nota_segundo_semestre": 0,
-         "media_final": 0,
-         "turma_id": 1},
-        {"id": 4,
-         "nome": "Renoir",
-         "idade": 19,
-         "data_nascimento": "Amanhã",
-         "nota_primeiro_semestre": 0,
-         "nota_segundo_semestre": 0,
-         "media_final": 0,
-         "turma_id": 1}
-        ],
-}
+# dici = {
+#     "alunos":[
+#         {"id": 1,
+#          "nome": "Sid",
+#          "idade": 28,
+#          "data_nascimento": "ontem",
+#          "nota_primeiro_semestre": 0,
+#          "nota_segundo_semestre": 0,
+#          "media_final": 0,
+#          "turma_id": 1},
+#         {"id": 2,
+#          "nome": "Leonardo",
+#          "idade": 23,
+#          "data_nascimento": "anteontem",
+#          "nota_primeiro_semestre": 0,
+#          "nota_segundo_semestre": 0,
+#          "media_final": 0,
+#          "turma_id": 1},
+#         {"id": 3,
+#          "nome": "Joana",
+#          "idade": 23,
+#          "data_nascimento": "há um tempo",
+#          "nota_primeiro_semestre": 0,
+#          "nota_segundo_semestre": 0,
+#          "media_final": 0,
+#          "turma_id": 1},
+#         {"id": 4,
+#          "nome": "Renoir",
+#          "idade": 19,
+#          "data_nascimento": "Amanhã",
+#          "nota_primeiro_semestre": 0,
+#          "nota_segundo_semestre": 0,
+#          "media_final": 0,
+#          "turma_id": 1}
+#         ],
+# }
+
+class Aluno(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    nome = db.Column(db.String(100))
+    idade = db.Column(db.Integer)
+    data_nascimento = db.Column(db.Date)
+    nota_primeiro_semestre = db.Column(db.Float)
+    nota_segundo_semestre = db.Column(db.Float)
+    media_final = db.Column(db.Float)
+    turma_id = db.Column(db.Integer)
+
+    def __init__(self, nome, data_nascimento="01-01-2001", nota_primeiro_semestre=0, nota_segundo_semestre=0, media_final=0, turma_id=0):
+        self.nome = nome
+        self.data_nascimento = datetime.strptime(data_nascimento, "%Y-%m-%d").date()
+        self.idade = self.calcular_idade(self.data_nascimento)
+        self.nota_primeiro_semestre = nota_primeiro_semestre
+        self.nota_segundo_semestre = nota_segundo_semestre
+        self.media_final = media_final
+        self.turma_id = turma_id
+
+    def calcular_idade(self, nascimento):
+        hoje = date.today()
+        return hoje.year - nascimento.year - ((hoje.month, hoje.day) < (nascimento.month, nascimento.day))
+
+    def to_dict(self):
+        return {"id": self.id,
+         "nome": self.nome,
+         "idade": self.idade,
+         "data_nascimento": self.data_nascimento.strftime("%Y-%m-%d"),
+         "nota_primeiro_semestre": self.nota_primeiro_semestre,
+         "nota_segundo_semestre": self.nota_segundo_semestre,
+         "media_final": self.media_final,
+         "turma_id": self.turma_id}
 
 class AlunosNaoEncontrados(Exception):
     pass
 
 def getAlunos():
-    return dici["alunos"]
+    alunos = Aluno.query.all()
+    lista_alunos = []
+    for aluno in alunos:
+        lista_alunos.append(aluno.to_dict())
+    return lista_alunos
 
 def getAlunoById(idAluno):
-    alunos = dici["alunos"]
-    for aluno in alunos:
-        if aluno["id"] == idAluno:
-            return aluno
-    raise AlunosNaoEncontrados
+    aluno = Aluno.query.get(idAluno)
+    if not aluno:
+        raise AlunosNaoEncontrados
+    return aluno.to_dict()
 
 def createAluno(dados):
-    lista_alunos = getAlunos()
-    dados['id'] = getNextId(lista_alunos)
-    for turma in getTurmas():
-        if turma['id'] == dados['turma_id']:
-            lista_alunos.append(dados)
-            return dici["alunos"] 
-    raise TurmasNaoEncontradas
+    novoAluno = Aluno(nome=dados['nome'], data_nascimento=dados['data_nascimento'], nota_primeiro_semestre=dados['nota_primeiro_semestre'], nota_segundo_semestre=dados['nota_segundo_semestre'], media_final=dados['media_final'], turma_id=dados['turma_id'])
+    db.session.add(novoAluno)
+    db.session.commit()
+    return novoAluno.to_dict()
     
 
 def updateAluno(idAluno, dados):
-    aluno = getAlunoById(idAluno)
-    aluno.update(dados)
-    return
+    aluno = Aluno.query.get(idAluno)
+    if not aluno:
+        raise AlunosNaoEncontrados
+    
+    for chave, valor in dados.items():
+        if hasattr(aluno, chave):
+            if chave == "data_nascimento" and isinstance(valor, str):
+                valor = datetime.strptime(valor, "%Y-%m-%d").date()
+            setattr(aluno, chave, valor)
+
+    db.session.commit()
+    return aluno.to_dict()
 
 def deleteAluno(idAluno):
-    alunos = getAlunos()
-    for aluno in alunos:
-        if aluno["id"] == idAluno:
-            alunos.remove(aluno)
-            return
+    aluno = Aluno.query.get(idAluno)
+    if not aluno:
+        raise AlunosNaoEncontrados
+    db.session.delete(aluno)
+    db.session.commit()
