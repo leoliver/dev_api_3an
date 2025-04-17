@@ -2,8 +2,6 @@ from config import app,db
 from alunos.alunos_routes import alunos_blueprint
 from professores.professores_routes import professores_blueprint
 from turmas.turmas_routes import turmas_blueprint
-import sys
-sys.dont_write_bytecode = True
 
 app.register_blueprint(alunos_blueprint)
 app.register_blueprint(professores_blueprint)

@@ -1,4 +1,5 @@
-from auxiliar import *
+from config import db
+from datetime import datetime,date
 
 dici = {
     "professores":[
@@ -15,33 +16,72 @@ dici = {
         ]
 }
 
+class Professor(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    nome = db.Column(db.String(100))
+    idade = db.Column(db.Integer)
+    data_nascimento = db.Column(db.Date)
+    salario = db.Column(db.Float)
+
+    def __init__(self, nome, data_nascimento, salario):
+        self.nome = nome
+        self.data_nascimento = datetime.strptime(data_nascimento, "%d-%m-%Y").date()
+        self.idade = self.calcular_idade(self.data_nascimento)
+        self.salario = salario
+    
+    def calcular_idade(self, nascimento):
+        hoje = date.today()
+        return hoje.year - nascimento.year - ((hoje.month, hoje.day) < (nascimento.month, nascimento.day))
+
+    def to_dict(self):
+        return {"id": self.id,
+         "nome": self.nome,
+         "idade": self.idade,
+         "data_nascimento": self.data_nascimento.strftime("%d-%m-%Y"),
+         "salario": self.salario}
+
 class ProfessoresNaoEncontrados(Exception):
     pass
 
 def getProfessores():
-    return dici["professores"]
-
-def getProfessorById(id_professor):
-    professores = dici["professores"]
+    professores = Professor.query.all()
+    lista_professores = []
     for professor in professores:
-        if professor["id"] == id_professor:
-            return professor
-    raise ProfessoresNaoEncontrados
+        lista_professores.append(professor.to_dict())
+    return lista_professores
+
+def getProfessorById(idProfessor):
+    professor = Professor.query.get(idProfessor)
+    if not professor:
+        raise ProfessoresNaoEncontrados
+    return professor.to_dict()
 
 def createProfessor(dados):
-    lista_professores = getProfessores()
-    dados['id'] = getNextId(lista_professores)
-    lista_professores.append(dados)
-    return dici["professores"]
+    novoProfessor = Professor(nome=dados['nome'], data_nascimento=dados['data_nascimento'],salario=dados['salario'])
+    db.session.add(novoProfessor)
+    db.session.commit()
+    return novoProfessor.to_dict()
 
-def updateProfessor(id_professor, dados):
-    professor = getProfessorById(id_professor)
-    professor.update(dados)
-    return
+def updateProfessor(idProfessor, dados):
+    professor = Professor.query.get(idProfessor)
+    if not professor:
+        raise ProfessoresNaoEncontrados
+    
+    for chave, valor in dados.items():
+        if hasattr(professor, chave):
+            if chave == "data_nascimento" and isinstance(valor, str):
+                valor = datetime.strptime(valor, "%d-%m-%Y").date()
+                setattr(professor, chave, valor)
+                professor.idade = professor.calcular_idade(professor.data_nascimento)
+            else:
+                setattr(professor, chave, valor)
 
-def deleteProfessor(id_professor):
-    professores = getProfessores()
-    for professor in professores:
-        if professor["id"] == id_professor:
-            professores.remove(professor)
-            return
+    db.session.commit()
+    return professor.to_dict()
+
+def deleteProfessor(idProfessor):
+    professor = Professor.query.get(idProfessor)
+    if not professor:
+        raise ProfessoresNaoEncontrados
+    db.session.delete(professor)
+    db.session.commit()

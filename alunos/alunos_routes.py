@@ -15,7 +15,7 @@ def getalunobyid(idAluno):
         aluno = getAlunoById(idAluno)
         return jsonify(aluno)
     except AlunosNaoEncontrados:
-        return jsonify({"erro": "Aluno nao encontrado"})
+        return jsonify({"erro": "Aluno nao encontrado","código": 404})
     
 @alunos_blueprint.route('/alunos', methods=['POST'])
 def createaluno():
@@ -24,7 +24,7 @@ def createaluno():
         aluno = createAluno(dados)
         return jsonify(aluno)
     except TurmasNaoEncontradas:
-        return jsonify({"erro": "Turma não encontrada"})
+        return jsonify({"erro": "Turma não encontrada","código": 404})
         
 
 @alunos_blueprint.route('/alunos/<int:idAluno>', methods=['PUT'])
@@ -42,4 +42,4 @@ def deletealuno(idAluno):
         deleteAluno(idAluno)
         return jsonify({"sucesso": "Aluno deletado com sucesso"})
     except AlunosNaoEncontrados:
-        return jsonify({"erro": "Aluno nao encontrado"})
+        return jsonify({"erro": "Aluno nao encontrado","código": 404})

@@ -14,7 +14,7 @@ def get_professor_by_id(idProfessor):
         professor = getProfessorById(idProfessor)
         return jsonify(professor)
     except ProfessoresNaoEncontrados:
-        return jsonify({"erro": "Professor nao encontrado"})
+        return jsonify({"erro": "Professor nao encontrado","código": 404})
     
 @professores_blueprint.route('/professores', methods=['POST'])
 def create_professor():
@@ -29,7 +29,7 @@ def update_professor(idProfessor):
         professor = updateProfessor(idProfessor, dados)
         return jsonify(professor)
     except ProfessoresNaoEncontrados:
-        return jsonify({"erro": "Professor nao encontrado"})
+        return jsonify({"erro": "Professor nao encontrado","código": 404})
     
 @professores_blueprint.route('/professores/<int:idProfessor>', methods=['DELETE'])
 def delete_professor(idProfessor):
@@ -37,4 +37,4 @@ def delete_professor(idProfessor):
         deleteProfessor(idProfessor)
         return jsonify({"sucesso": "Professor deletado com sucesso"})
     except ProfessoresNaoEncontrados:
-        return jsonify({"erro": "Professor nao encontrado"})
+        return jsonify({"erro": "Professor nao encontrado","código": 404})

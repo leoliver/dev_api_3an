@@ -1,44 +1,6 @@
-from auxiliar import *
 from turmas.turmas_model import TurmasNaoEncontradas, getTurmas
 from config import db
-from datetime import datetime, date
-
-# dici = {
-#     "alunos":[
-#         {"id": 1,
-#          "nome": "Sid",
-#          "idade": 28,
-#          "data_nascimento": "ontem",
-#          "nota_primeiro_semestre": 0,
-#          "nota_segundo_semestre": 0,
-#          "media_final": 0,
-#          "turma_id": 1},
-#         {"id": 2,
-#          "nome": "Leonardo",
-#          "idade": 23,
-#          "data_nascimento": "anteontem",
-#          "nota_primeiro_semestre": 0,
-#          "nota_segundo_semestre": 0,
-#          "media_final": 0,
-#          "turma_id": 1},
-#         {"id": 3,
-#          "nome": "Joana",
-#          "idade": 23,
-#          "data_nascimento": "há um tempo",
-#          "nota_primeiro_semestre": 0,
-#          "nota_segundo_semestre": 0,
-#          "media_final": 0,
-#          "turma_id": 1},
-#         {"id": 4,
-#          "nome": "Renoir",
-#          "idade": 19,
-#          "data_nascimento": "Amanhã",
-#          "nota_primeiro_semestre": 0,
-#          "nota_segundo_semestre": 0,
-#          "media_final": 0,
-#          "turma_id": 1}
-#         ],
-# }
+from datetime import datetime,date
 
 class Aluno(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -50,9 +12,9 @@ class Aluno(db.Model):
     media_final = db.Column(db.Float)
     turma_id = db.Column(db.Integer)
 
-    def __init__(self, nome, data_nascimento="01-01-2001", nota_primeiro_semestre=0, nota_segundo_semestre=0, media_final=0, turma_id=0):
+    def __init__(self, nome, data_nascimento, turma_id, nota_primeiro_semestre=0, nota_segundo_semestre=0, media_final=0):
         self.nome = nome
-        self.data_nascimento = datetime.strptime(data_nascimento, "%Y-%m-%d").date()
+        self.data_nascimento = datetime.strptime(data_nascimento, "%d-%m-%Y").date()
         self.idade = self.calcular_idade(self.data_nascimento)
         self.nota_primeiro_semestre = nota_primeiro_semestre
         self.nota_segundo_semestre = nota_segundo_semestre
@@ -67,7 +29,7 @@ class Aluno(db.Model):
         return {"id": self.id,
          "nome": self.nome,
          "idade": self.idade,
-         "data_nascimento": self.data_nascimento.strftime("%Y-%m-%d"),
+         "data_nascimento": self.data_nascimento.strftime("%d-%m-%Y"),
          "nota_primeiro_semestre": self.nota_primeiro_semestre,
          "nota_segundo_semestre": self.nota_segundo_semestre,
          "media_final": self.media_final,
@@ -90,7 +52,7 @@ def getAlunoById(idAluno):
     return aluno.to_dict()
 
 def createAluno(dados):
-    novoAluno = Aluno(nome=dados['nome'], data_nascimento=dados['data_nascimento'], nota_primeiro_semestre=dados['nota_primeiro_semestre'], nota_segundo_semestre=dados['nota_segundo_semestre'], media_final=dados['media_final'], turma_id=dados['turma_id'])
+    novoAluno = Aluno(nome=dados['nome'], data_nascimento=dados['data_nascimento'], turma_id=dados['turma_id'], nota_primeiro_semestre=dados['nota_primeiro_semestre'], nota_segundo_semestre=dados['nota_segundo_semestre'], media_final=dados['media_final'])
     db.session.add(novoAluno)
     db.session.commit()
     return novoAluno.to_dict()
@@ -104,8 +66,11 @@ def updateAluno(idAluno, dados):
     for chave, valor in dados.items():
         if hasattr(aluno, chave):
             if chave == "data_nascimento" and isinstance(valor, str):
-                valor = datetime.strptime(valor, "%Y-%m-%d").date()
-            setattr(aluno, chave, valor)
+                valor = datetime.strptime(valor, "%d-%m-%Y").date()
+                setattr(aluno, chave, valor)
+                aluno.idade = aluno.calcular_idade(aluno.data_nascimento)
+            else:
+                setattr(aluno, chave, valor)
 
     db.session.commit()
     return aluno.to_dict()

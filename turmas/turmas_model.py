@@ -1,5 +1,3 @@
-from auxiliar import *
-
 dici = {
     "turmas":[
         {"id": 1, 
