@@ -1,20 +1,6 @@
 from config import db
 from datetime import datetime,date
 
-dici = {
-    "professores":[
-        {"id": 1, 
-         "nome":"Caio", 
-         "data_nascimento":"04/05/1995",
-         "disciplina":"Desenvolvimento de API",
-         "salario": 1000},
-        {"id": 2, 
-         "nome":"Kleber", 
-         "data_nascimento":"10/07/1995",
-         "disciplina":"DevOps",
-         "salario": 2000}
-        ]
-}
 
 class Professor(db.Model):
     id = db.Column(db.Integer, primary_key = True)
