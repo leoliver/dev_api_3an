@@ -30,7 +30,8 @@ class TestStringMethods(unittest.TestCase):
           self.assertEqual(type(aluno),type({}))
 
      def test_002_alunos_criacao(self):
-          r = requests.post('http://localhost:5000/alunos', json={"nome": "Hiago", "idade": 35, "data_nascimento": "02/05/1980", "nota_primeiro_semestre": 0, "nota_segundo_semestre": 0, "media_final": 0, "turma_id": 1})
+          
+          r = requests.post('http://localhost:5000/alunos', json={"nome": "Hiago", "data_nascimento": "02-05-1980", "turma_id": 1, "nota_primeiro_semestre": 0, "nota_segundo_semestre": 0, "media_final": 0})
 
           if r.status_code == 404:
                self.fail("Página /alunos não definida no servidor para o método POST.")
@@ -47,18 +48,26 @@ class TestStringMethods(unittest.TestCase):
                self.fail("Erro na criação do aluno")
 
      def test_003_alunos_atualiza_dados_id(self):
-          r = requests.put('http://localhost:5000/alunos/2', json={"nome": "Welington", "idade": 19})
+          get = requests.get('http://localhost:5000/alunos')
+          lista_alunos = get.json()
+          lastIndex = lista_alunos[-1]["id"]
+
+          r = requests.put(f'http://localhost:5000/alunos/{lastIndex}', json={"nome": "Welington"})
 
           if r.status_code == 404:
                self.fail("Página /alunos/id não definida no servidor para o método PUT.")
 
-          resposta = requests.get('http://localhost:5000/alunos/2')
+          resposta = requests.get(f'http://localhost:5000/alunos/{lastIndex}')
           aluno = resposta.json()
-          if not (aluno['nome'] == 'Welington' and aluno['idade'] == 19):
+          if not aluno['nome'] == 'Welington':
                self.fail("Dados não foram atualizados")
 
      def test_004_alunos_delete_id(self):
-          r = requests.delete('http://localhost:5000/alunos/4')
+          get = requests.get('http://localhost:5000/alunos')
+          lista_alunos = get.json()
+          lastIndex = lista_alunos[-1]["id"]
+
+          r = requests.delete(f'http://localhost:5000/alunos/{lastIndex}')
 
           if r.status_code == 404:
                self.fail("Página /alunos/id não definida no servidor para o método DELETE.")
@@ -68,7 +77,7 @@ class TestStringMethods(unittest.TestCase):
           deletado = True
 
           for aluno in lista_alunos:
-               if aluno['id'] == 4:
+               if aluno['id'] == lastIndex:
                     deletado = False
 
           if not deletado:
