@@ -4,163 +4,163 @@ import requests
 
 class TestStringMethods(unittest.TestCase):
 
-     # def test_000_alunos_retorna_lista(self):
-     #      r = requests.get('http://localhost:5000/alunos')
-     #      if r.status_code == 404:
-     #           self.fail("Página /alunos não definida no servidor para o método GET.")
+     def test_000_alunos_retorna_lista(self):
+          r = requests.get('http://localhost:5000/alunos')
+          if r.status_code == 404:
+               self.fail("Página /alunos não definida no servidor para o método GET.")
 
-     #      try:
-     #           lista_alunos = r.json()
-     #      except:
-     #           self.fail("Formato deveria ser JSON.")
+          try:
+               lista_alunos = r.json()
+          except:
+               self.fail("Formato deveria ser JSON.")
 
-     #      self.assertEqual(type(lista_alunos),type([]))
+          self.assertEqual(type(lista_alunos),type([]))
 
-     # def test_001_alunos_procura_id(self):
-     #      r = requests.get('http://localhost:5000/alunos/1')
+     def test_001_alunos_procura_id(self):
+          r = requests.get('http://localhost:5000/alunos/1')
                
-     #      if r.status_code == 404:
-     #           self.fail("Página /alunos/id não definida no servidor para o método GET por Id.")
+          if r.status_code == 404:
+               self.fail("Página /alunos/id não definida no servidor para o método GET por Id.")
 
-     #      try:
-     #           aluno = r.json()
-     #      except:
-     #           self.fail("Formato deveria ser JSON.")
+          try:
+               aluno = r.json()
+          except:
+               self.fail("Formato deveria ser JSON.")
 
-     #      self.assertEqual(type(aluno),type({}))
+          self.assertEqual(type(aluno),type({}))
 
-     # def test_002_alunos_criacao(self):
+     def test_002_alunos_criacao(self):
           
-     #      r = requests.post('http://localhost:5000/alunos', json={"nome": "Hiago", "data_nascimento": "02-05-1980", "turma_id": 1, "nota_primeiro_semestre": 0, "nota_segundo_semestre": 0, "media_final": 0})
+          r = requests.post('http://localhost:5000/alunos', json={"nome": "Hiago", "data_nascimento": "02-05-1980", "turma_id": 1, "nota_primeiro_semestre": 0, "nota_segundo_semestre": 0, "media_final": 0})
 
-     #      if r.status_code == 404:
-     #           self.fail("Página /alunos não definida no servidor para o método POST.")
+          if r.status_code == 404:
+               self.fail("Página /alunos não definida no servidor para o método POST.")
 
-     #      resposta = requests.get('http://localhost:5000/alunos')
-     #      achei = False
-     #      lista_alunos = resposta.json()
+          resposta = requests.get('http://localhost:5000/alunos')
+          achei = False
+          lista_alunos = resposta.json()
 
-     #      for aluno in lista_alunos:
-     #           if aluno['nome'] == 'Hiago':
-     #                achei = True
+          for aluno in lista_alunos:
+               if aluno['nome'] == 'Hiago':
+                    achei = True
           
-     #      if not achei:
-     #           self.fail("Erro na criação do aluno")
+          if not achei:
+               self.fail("Erro na criação do aluno")
 
-     # def test_003_alunos_atualiza_dados_id(self):
-     #      get = requests.get('http://localhost:5000/alunos')
-     #      lista_alunos = get.json()
-     #      lastIndex = lista_alunos[-1]["id"]
+     def test_003_alunos_atualiza_dados_id(self):
+          get = requests.get('http://localhost:5000/alunos')
+          lista_alunos = get.json()
+          lastIndex = lista_alunos[-1]["id"]
 
-     #      r = requests.put(f'http://localhost:5000/alunos/{lastIndex}', json={"nome": "Welington"})
+          r = requests.put(f'http://localhost:5000/alunos/{lastIndex}', json={"nome": "Welington"})
 
-     #      if r.status_code == 404:
-     #           self.fail("Página /alunos/id não definida no servidor para o método PUT.")
+          if r.status_code == 404:
+               self.fail("Página /alunos/id não definida no servidor para o método PUT.")
 
-     #      resposta = requests.get(f'http://localhost:5000/alunos/{lastIndex}')
-     #      aluno = resposta.json()
-     #      if not aluno['nome'] == 'Welington':
-     #           self.fail("Dados não foram atualizados")
+          resposta = requests.get(f'http://localhost:5000/alunos/{lastIndex}')
+          aluno = resposta.json()
+          if not aluno['nome'] == 'Welington':
+               self.fail("Dados não foram atualizados")
 
-     # def test_004_alunos_delete_id(self):
-     #      get = requests.get('http://localhost:5000/alunos')
-     #      lista_alunos = get.json()
-     #      lastIndex = lista_alunos[-1]["id"]
+     def test_004_alunos_delete_id(self):
+          get = requests.get('http://localhost:5000/alunos')
+          lista_alunos = get.json()
+          lastIndex = lista_alunos[-1]["id"]
 
-     #      r = requests.delete(f'http://localhost:5000/alunos/{lastIndex}')
+          r = requests.delete(f'http://localhost:5000/alunos/{lastIndex}')
 
-     #      if r.status_code == 404:
-     #           self.fail("Página /alunos/id não definida no servidor para o método DELETE.")
+          if r.status_code == 404:
+               self.fail("Página /alunos/id não definida no servidor para o método DELETE.")
           
-     #      resposta = requests.get('http://localhost:5000/alunos')
-     #      lista_alunos = resposta.json()
-     #      deletado = True
+          resposta = requests.get('http://localhost:5000/alunos')
+          lista_alunos = resposta.json()
+          deletado = True
 
-     #      for aluno in lista_alunos:
-     #           if aluno['id'] == lastIndex:
-     #                deletado = False
+          for aluno in lista_alunos:
+               if aluno['id'] == lastIndex:
+                    deletado = False
 
-     #      if not deletado:
-     #           self.fail("O aluno não foi deletado corretamente.")
+          if not deletado:
+               self.fail("O aluno não foi deletado corretamente.")
 
-     # def test_100_professores_retorna_lista(self):
-     #      r = requests.get('http://localhost:5000/professores')
+     def test_100_professores_retorna_lista(self):
+          r = requests.get('http://localhost:5000/professores')
 
-     #      if r.status_code == 404:
-     #           self.fail("Página /professores não definida no servidor para o método GET.")
+          if r.status_code == 404:
+               self.fail("Página /professores não definida no servidor para o método GET.")
 
-     #      try:
-     #           professores = r.json()
-     #      except:
-     #           self.fail("Formato deveria ser JSON")
+          try:
+               professores = r.json()
+          except:
+               self.fail("Formato deveria ser JSON")
 
-     #      self.assertEqual(type(professores),type([])) 
+          self.assertEqual(type(professores),type([])) 
 
-     # def test_101_professores_procura_id(self):
-     #      r = requests.get('http://localhost:5000/professores/1')
+     def test_101_professores_procura_id(self):
+          r = requests.get('http://localhost:5000/professores/1')
           
-     #      if r.status_code == 404:
-     #           self.fail("Página /professores/id não definida no servidor para o método GET por Id.")
+          if r.status_code == 404:
+               self.fail("Página /professores/id não definida no servidor para o método GET por Id.")
 
-     #      try:
-     #           professor = r.json()
-     #      except:
-     #           self.fail("Formato deveria ser JSON.")
+          try:
+               professor = r.json()
+          except:
+               self.fail("Formato deveria ser JSON.")
 
-     #      self.assertEqual(type(professor),type({}))
+          self.assertEqual(type(professor),type({}))
 
-     # def test_102_professores_criacao(self):
-     #      r = requests.post('http://localhost:5000/professores', json={'nome': 'Sidinei', 'data_nascimento': '07-08-1997', 'disciplina':'Matematica', 'salario': 3000})
+     def test_102_professores_criacao(self):
+          r = requests.post('http://localhost:5000/professores', json={'nome': 'Sidinei', 'data_nascimento': '07-08-1997', 'disciplina':'Matematica', 'salario': 3000})
 
-     #      if r.status_code == 404:
-     #           self.fail("Página /professores não definida no servidor para o método POST.")
+          if r.status_code == 404:
+               self.fail("Página /professores não definida no servidor para o método POST.")
 
-     #      resposta = requests.get('http://localhost:5000/professores')
-     #      achei = False
-     #      lista_professores = resposta.json()
+          resposta = requests.get('http://localhost:5000/professores')
+          achei = False
+          lista_professores = resposta.json()
 
-     #      for professor in lista_professores:
-     #           if professor['nome'] == 'Sidinei':
-     #                achei = True
+          for professor in lista_professores:
+               if professor['nome'] == 'Sidinei':
+                    achei = True
           
-     #      if not achei:
-     #           self.fail("O professor não foi encontrado")
+          if not achei:
+               self.fail("O professor não foi encontrado")
 
-     # def test_103_professores_atualiza_dados_id(self):
-     #      get = requests.get('http://localhost:5000/professores')
-     #      lista_professores = get.json()
-     #      lastIndex = lista_professores[-1]["id"]
+     def test_103_professores_atualiza_dados_id(self):
+          get = requests.get('http://localhost:5000/professores')
+          lista_professores = get.json()
+          lastIndex = lista_professores[-1]["id"]
 
-     #      r = requests.put(f'http://localhost:5000/professores/{lastIndex}', json={'disciplina':'Desenvolvimento Mobile'})
+          r = requests.put(f'http://localhost:5000/professores/{lastIndex}', json={'disciplina':'Desenvolvimento Mobile'})
 
-     #      if r.status_code == 404:
-     #           self.fail("Página /professores/id não definida no servidor para o método PUT.")
+          if r.status_code == 404:
+               self.fail("Página /professores/id não definida no servidor para o método PUT.")
 
-     #      resposta = requests.get(f'http://localhost:5000/professores/{lastIndex}')
-     #      professor = resposta.json()
-     #      if not professor['disciplina'] == 'Desenvolvimento Mobile':
-     #           self.fail("Dados não foram atualizados")
+          resposta = requests.get(f'http://localhost:5000/professores/{lastIndex}')
+          professor = resposta.json()
+          if not professor['disciplina'] == 'Desenvolvimento Mobile':
+               self.fail("Dados não foram atualizados")
 
-     # def test_104_professores_delete_id(self):
-     #      get = requests.get('http://localhost:5000/professores')
-     #      lista_professores = get.json()
-     #      lastIndex = lista_professores[-1]["id"]
+     def test_104_professores_delete_id(self):
+          get = requests.get('http://localhost:5000/professores')
+          lista_professores = get.json()
+          lastIndex = lista_professores[-1]["id"]
 
-     #      r = requests.delete(f'http://localhost:5000/professores/{lastIndex}')
+          r = requests.delete(f'http://localhost:5000/professores/{lastIndex}')
           
-     #      if r.status_code == 404:
-     #           self.fail("Página /professores/id não definida no servidor para o método DELETE.")
+          if r.status_code == 404:
+               self.fail("Página /professores/id não definida no servidor para o método DELETE.")
      
-     #      resposta = requests.get('http://localhost:5000/professores')
-     #      lista_professores = resposta.json()
-     #      deletado = True
+          resposta = requests.get('http://localhost:5000/professores')
+          lista_professores = resposta.json()
+          deletado = True
 
-     #      for professor in lista_professores:
-     #           if professor['id'] == lastIndex:
-     #                deletado = False
+          for professor in lista_professores:
+               if professor['id'] == lastIndex:
+                    deletado = False
 
-     #      if not deletado:
-     #           self.fail("O professor não foi deletado corretamente.")
+          if not deletado:
+               self.fail("O professor não foi deletado corretamente.")
 
      #Testes Turmas     
      def test_200_busca_as_turmas(self):
