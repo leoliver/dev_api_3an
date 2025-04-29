@@ -19,8 +19,12 @@ class Aluno(db.Model):
         self.idade = self.calcular_idade(self.data_nascimento)
         self.nota_primeiro_semestre = nota_primeiro_semestre
         self.nota_segundo_semestre = nota_segundo_semestre
-        self.media_final = media_final
+        self.media_final = self.calcular_media(self.nota_primeiro_semestre, self.nota_segundo_semestre)
         self.turma_id = turma_id
+
+    def calcular_media(self, nota_primeiro_semestre, nota_segundo_semestre):
+        media = (nota_primeiro_semestre + nota_segundo_semestre)/2
+        return media
 
     def calcular_idade(self, nascimento):
         hoje = date.today()
