@@ -10,7 +10,8 @@ class Aluno(db.Model):
     nota_primeiro_semestre = db.Column(db.Float)
     nota_segundo_semestre = db.Column(db.Float)
     media_final = db.Column(db.Float)
-    turma_id = db.Column(db.Integer)
+    turma_id = db.Column(db.Integer, db.ForeignKey('id.turma'))
+    turma = db.relationship('Turma', back_populates = 'alunos')
 
     def __init__(self, nome, data_nascimento, turma_id, nota_primeiro_semestre=0, nota_segundo_semestre=0, media_final=0):
         self.nome = nome

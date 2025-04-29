@@ -4,7 +4,9 @@ class Turma(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     nome = db.Column(db.String(100))
     turno = db.Column(db.String(30))
-    id_professor = db.Column(db.Integer)
+    id_professor = db.Column(db.Integer, db.ForeignKey('professor.id'))
+    professor = db.relationship('Professor', back_populates = 'turmas')
+    alunos = db.relationship('Alunos', back_populates = 'turma')
 
     def __init__(self, nome, turno, id_professor):
         self.nome = nome
