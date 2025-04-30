@@ -13,7 +13,7 @@ class Aluno(db.Model):
     turma_id = db.Column(db.Integer, db.ForeignKey('turma.id'))
     turma = db.relationship('Turma', back_populates = 'alunos')
 
-    def __init__(self, nome, data_nascimento, turma_id, nota_primeiro_semestre=0, nota_segundo_semestre=0, media_final=0):
+    def __init__(self, nome, data_nascimento, turma_id, nota_primeiro_semestre=0, nota_segundo_semestre=0):
         self.nome = nome
         self.data_nascimento = datetime.strptime(data_nascimento, "%d-%m-%Y").date()
         self.idade = self.calcular_idade(self.data_nascimento)
