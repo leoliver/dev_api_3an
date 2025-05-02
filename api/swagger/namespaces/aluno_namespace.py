@@ -14,7 +14,7 @@ alunos_model = alunos_ns.model ("Aluno",{
 alunos_output_model = alunos_ns.model("AlunoOutPut", {
     "id": fields.String(required = True, description="ID Aluno."),
     "nome": fields.String(required = True, description="Nome do aluno."),
-    "data_nascimento": fields.String(required = True, description="Data de nascimento (AAAA-MM-DD)."),
+    "data_nascimento": fields.String(required = True, description="Data de nascimento (DD-MM-AAAA)."),
     "nota_primeiro_semestre": fields.Float(required = True, description="Nota primeiro semestre."),
     "nota_segundo_semestre": fields.Float(required = True, description="Nota segundo semestre."),
     "turma_id": fields.Integer(required = True, description="ID Turma associada."),
@@ -35,8 +35,8 @@ class AlunosResource(Resource):
         response, status_code = createAluno(data)
         return response, status_code
     
-@alunos_ns.route("/<int:id_aluno>")
-class AlunoIdResource(Resource):
+@alunos_ns.route("/<int:idAluno>")
+class AlunoResource(Resource):
     @alunos_ns.marshal_with(alunos_output_model)
     def get(self, id_aluno):
         """Busca um aluno pelo ID"""
@@ -52,4 +52,4 @@ class AlunoIdResource(Resource):
     def delete(self, id_aluno):
         """Deleta um aluno"""
         deleteAluno(id_aluno)
-        return {"message": "Aluno excluído com sucesso"}, 200
+        return {"message": "Aluno excluído com sucesso!"}, 200
