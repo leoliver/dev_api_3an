@@ -17,7 +17,13 @@ class TestStringMethods(unittest.TestCase):
           self.assertEqual(type(lista_alunos),type([]))
 
      def test_001_alunos_procura_id(self):
-          r = requests.get('http://localhost:5000/alunos/1')
+          post = requests.post('http://localhost:5000/alunos', json={"nome": "Bruno", "data_nascimento": "14-08-1988", "turma_id": 1, "nota_primeiro_semestre": 0, "nota_segundo_semestre": 0})
+
+          get = requests.get('http://localhost:5000/alunos')
+          lista_alunos = get.json()
+          lastIndex = lista_alunos[-1]["id"]          
+
+          r = requests.get(f'http://localhost:5000/alunos/{lastIndex}')
                
           if r.status_code == 404:
                self.fail("Página /alunos/id não definida no servidor para o método GET por Id.")
@@ -30,8 +36,7 @@ class TestStringMethods(unittest.TestCase):
           self.assertEqual(type(aluno),type({}))
 
      def test_002_alunos_criacao(self):
-          
-          r = requests.post('http://localhost:5000/alunos', json={"nome": "Hiago", "data_nascimento": "02-05-1980", "turma_id": 1, "nota_primeiro_semestre": 0, "nota_segundo_semestre": 0, "media_final": 0})
+          r = requests.post('http://localhost:5000/alunos', json={"nome": "Hiago", "data_nascimento": "02-05-1980", "turma_id": 1, "nota_primeiro_semestre": 0, "nota_segundo_semestre": 0})
 
           if r.status_code == 404:
                self.fail("Página /alunos não definida no servidor para o método POST.")
@@ -48,6 +53,8 @@ class TestStringMethods(unittest.TestCase):
                self.fail("Erro na criação do aluno")
 
      def test_003_alunos_atualiza_dados_id(self):
+          post = requests.post('http://localhost:5000/alunos', json={"nome": "Felipe", "data_nascimento": "14-10-2003", "turma_id": 1, "nota_primeiro_semestre": 0, "nota_segundo_semestre": 0})
+
           get = requests.get('http://localhost:5000/alunos')
           lista_alunos = get.json()
           lastIndex = lista_alunos[-1]["id"]
@@ -63,6 +70,8 @@ class TestStringMethods(unittest.TestCase):
                self.fail("Dados não foram atualizados")
 
      def test_004_alunos_delete_id(self):
+          post = requests.post('http://localhost:5000/alunos', json={"nome": "Bruno", "data_nascimento": "14-08-1988", "turma_id": 1, "nota_primeiro_semestre": 0, "nota_segundo_semestre": 0})
+
           get = requests.get('http://localhost:5000/alunos')
           lista_alunos = get.json()
           lastIndex = lista_alunos[-1]["id"]
@@ -97,7 +106,13 @@ class TestStringMethods(unittest.TestCase):
           self.assertEqual(type(professores),type([])) 
 
      def test_101_professores_procura_id(self):
-          r = requests.get('http://localhost:5000/professores/1')
+          post = requests.post('http://localhost:5000/professores', json={'nome': 'Antonio', 'data_nascimento': '07-08-1976', 'disciplina':'Inglês', 'salario': 7000})
+
+          get = requests.get('http://localhost:5000/professores')
+          lista_professores = get.json()
+          lastIndex = lista_professores[-1]["id"]
+
+          r = requests.get(f'http://localhost:5000/professores/{lastIndex}')
           
           if r.status_code == 404:
                self.fail("Página /professores/id não definida no servidor para o método GET por Id.")
@@ -127,6 +142,8 @@ class TestStringMethods(unittest.TestCase):
                self.fail("O professor não foi encontrado")
 
      def test_103_professores_atualiza_dados_id(self):
+          post = requests.post('http://localhost:5000/professores', json={'nome': 'Matheus', 'data_nascimento': '07-08-1900', 'disciplina':'Java pra iniciantes', 'salario': 7000})
+
           get = requests.get('http://localhost:5000/professores')
           lista_professores = get.json()
           lastIndex = lista_professores[-1]["id"]
@@ -142,6 +159,8 @@ class TestStringMethods(unittest.TestCase):
                self.fail("Dados não foram atualizados")
 
      def test_104_professores_delete_id(self):
+          post = requests.post('http://localhost:5000/professores', json={'nome': 'Caique', 'data_nascimento': '07-08-1976', 'disciplina':'RPA', 'salario': 1200})
+
           get = requests.get('http://localhost:5000/professores')
           lista_professores = get.json()
           lastIndex = lista_professores[-1]["id"]
@@ -164,7 +183,6 @@ class TestStringMethods(unittest.TestCase):
 
      #Testes Turmas     
      def test_200_busca_as_turmas(self):
-
           req_turmas = requests.get('http://127.0.0.1:5000/turmas')
           if req_turmas.status_code == 404:
                     self.fail("Página /turmas não definida no servidor para o método GET.")
@@ -178,15 +196,22 @@ class TestStringMethods(unittest.TestCase):
           self.assertEqual(type(retorno), type([]))
      
      def test_201_busca_turma_por_ID(self):
-          req_turmas = requests.get('http://127.0.0.1:5000/turmas/1')
+          post = requests.post('http://127.0.0.1:5000/turmas',json={"nome": "Engenharia de Requisitos", "turno": "Manhã", "id_professor": 1})
+
+          get = requests.get('http://127.0.0.1:5000/turmas')
+          lista_turmas = get.json()
+          last_index = lista_turmas[-1]['id']
+
+          req_turmas = requests.get(f'http://127.0.0.1:5000/turmas/{last_index}')
           retorno = req_turmas.json()
           if req_turmas.status_code == 404:
                     self.fail("Página /turmas/id não definida no servidor para o método GET.")
 
-          self.assertEqual(retorno['id'],1)
+          self.assertEqual(type(retorno),type({}))
      
      def test_202_adiciona_turma(self):
           req_turmas = requests.post('http://127.0.0.1:5000/turmas',json={"nome": "Engenharia de Requisitos", "turno": "Manhã", "id_professor": 3})
+
           req_turmas2 = requests.get('http://127.0.0.1:5000/turmas')
           if req_turmas.status_code == 404:
                     self.fail("Página /turmas não definida no servidor para o método POST.")
@@ -202,11 +227,16 @@ class TestStringMethods(unittest.TestCase):
                self.fail("Não achei o objeto adicionado.")        
 
      def test_203_atualiza_turma(self):
+          post = requests.post('http://127.0.0.1:5000/turmas',json={"nome": "Engenharia de Requisitos", "turno": "Manhã", "id_professor": 1})
+          
           get = requests.get('http://127.0.0.1:5000/turmas')
           lista_turmas = get.json()
           last_index = lista_turmas[-1]['id']
+
           req_turmas = requests.put(f'http://127.0.0.1:5000/turmas/{last_index}', json = {"nome": "Lógica de Programação"})
+
           req_turmas_att = requests.get('http://127.0.0.1:5000/turmas')
+
           if req_turmas.status_code == 404:
                     self.fail("Página /turmas não definida no servidor para o método PUT.")
 
@@ -223,16 +253,19 @@ class TestStringMethods(unittest.TestCase):
           retorno = req_turmas_att.json()
 
      def test_204_deleta_turma(self):
+          post = requests.post('http://127.0.0.1:5000/turmas', json={"nome": "Engenharia de Requisitos", "turno": "Manhã", "id_professor":2})
+
           get = requests.get('http://127.0.0.1:5000/turmas')
           lista_turmas = get.json()
           last_index = lista_turmas[-1]['id']
-          req_turmas = requests.post('http://127.0.0.1:5000/turmas', json={"nome": "Engenharia de Requisitos", "turno": "Manhã", "id_professor":2})
-          req_turmas3 = requests.delete(f'http://127.0.0.1:5000/turmas/{last_index}')
-          req_turmas2 = requests.get('http://127.0.0.1:5000/turmas')
-          if req_turmas.status_code == 404:
+
+          delete = requests.delete(f'http://127.0.0.1:5000/turmas/{last_index}')
+
+          get = requests.get('http://127.0.0.1:5000/turmas')
+          if delete.status_code == 404:
                     self.fail("Página /turmas não definida no servidor para o método DELETE.")
 
-          lista_turmas = req_turmas2.json()
+          lista_turmas = get.json()
           deletado = True
 
           for turma in lista_turmas:

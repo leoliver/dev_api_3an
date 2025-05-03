@@ -57,7 +57,7 @@ def getAlunoById(idAluno):
     return aluno.to_dict()
 
 def createAluno(dados):
-    novoAluno = Aluno(nome=dados['nome'], data_nascimento=dados['data_nascimento'], turma_id=dados['turma_id'], nota_primeiro_semestre=dados['nota_primeiro_semestre'], nota_segundo_semestre=dados['nota_segundo_semestre'], media_final=dados['media_final'])
+    novoAluno = Aluno(nome=dados['nome'], data_nascimento=dados['data_nascimento'], turma_id=dados['turma_id'], nota_primeiro_semestre=dados['nota_primeiro_semestre'], nota_segundo_semestre=dados['nota_segundo_semestre'])
     db.session.add(novoAluno)
     db.session.commit()
     return novoAluno.to_dict()
