@@ -3,7 +3,7 @@ from turmas.turmas_model import createTurma, getTurmaById, getTurmas, deleteTurm
 
 turmas_ns = Namespace("Turmas", description="Operações relacionadas a turmas")
 
-turmas_model = turmas_ns("Turmas",{
+turmas_model = turmas_ns.model("Turmas",{
     "nome":fields.String(required = True, description = "Nome da disciplina."),
     "turno":fields.String(required = True, description = "Turno da disciplina."),
     "id_professor":fields.Integer(required = True, description = "ID Professor associado.")
@@ -18,7 +18,7 @@ turmas_output_model = turmas_ns.model("TurmasOutPut",{
 })
 
 @turmas_ns.route("/")
-class TurmaResource(Resource):
+class TurmasResource(Resource):
     @turmas_ns.marshal_list_with(turmas_output_model)
     def get(self):
         """Lista todas as turmas"""
@@ -33,7 +33,7 @@ class TurmaResource(Resource):
 
 
 @turmas_ns.route("/<int:idTurma>")
-class TurmaResource(Resource):
+class TurmaIdResource(Resource):
     @turmas_ns.marshal_list_with(turmas_output_model)
     def get(self, id_turma):
         """Busca uma turma pelo ID"""

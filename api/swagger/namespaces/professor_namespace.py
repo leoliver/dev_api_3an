@@ -1,6 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from professores.professores_model import getProfessores, getProfessorById, createProfessor, updateProfessor, deleteProfessor
-professores_ns = Namespace("professores", description="Operações relacionadas aos professores")
+
+professores_ns = Namespace("Professores", description="Operações relacionadas aos professores")
 
 #Entrada de dados
 professores_model = professores_ns.model("Professores", {
@@ -35,7 +36,7 @@ class ProfessoresResource(Resource):
         return response, status_code
 
 @professores_ns.route("/<int:idProfessor>")
-class ProfessoresResource(Resource):
+class ProfessorIdResource(Resource):
     @professores_ns.marshal_with(professores_output_model)
     def get(self, idprofessor):
         """Busca um professor pelo ID"""

@@ -36,7 +36,7 @@ class AlunosResource(Resource):
         return response, status_code
     
 @alunos_ns.route("/<int:idAluno>")
-class AlunoResource(Resource):
+class AlunoIdResource(Resource):
     @alunos_ns.marshal_with(alunos_output_model)
     def get(self, id_aluno):
         """Busca um aluno pelo ID"""
