@@ -10,7 +10,7 @@ turmas_model = turmas_ns.model("Turmas",{
 })
 
 turmas_output_model = turmas_ns.model("TurmasOutPut",{
-    "ID":fields.Integer(required = True, description = "ID turma."),
+    "id":fields.Integer(required = True, description = "ID turma."),
     "nome":fields.String(required = True, description = "Nome da disciplina."),
     "turno":fields.String(required = True, description = "Turno da disciplina."),
     "id_professor":fields.Integer(required = True, description = "ID Professor associado.")
@@ -32,7 +32,7 @@ class TurmasResource(Resource):
         return response, status_code
 
 
-@turmas_ns.route("/<int:idTurma>")
+@turmas_ns.route("/<int:id_turma>")
 class TurmaIdResource(Resource):
     @turmas_ns.marshal_list_with(turmas_output_model)
     def get(self, id_turma):

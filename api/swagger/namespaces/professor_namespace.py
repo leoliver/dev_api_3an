@@ -35,22 +35,22 @@ class ProfessoresResource(Resource):
         response, status_code = createProfessor(data)
         return response, status_code
 
-@professores_ns.route("/<int:idProfessor>")
+@professores_ns.route("/<int:id_professor>")
 class ProfessorIdResource(Resource):
     @professores_ns.marshal_with(professores_output_model)
-    def get(self, idprofessor):
+    def get(self, id_professor):
         """Busca um professor pelo ID"""
-        return getProfessorById(idprofessor)
+        return getProfessorById(id_professor)
     
     @professores_ns.expect(professores_model)
-    def put(self, idprofessor):
+    def put(self, id_professor):
         """Atualiza um professor"""
         data = professores_ns.payload
-        updateProfessor(idprofessor, data)
+        updateProfessor(id_professor, data)
         return data, 200
     
-    def delete(self, idprofessor):
+    def delete(self, id_professor):
         """Deleta um professor"""
-        deleteProfessor(idprofessor)
+        deleteProfessor(id_professor)
         return {"message": "Aluno excluído com sucesso!"}, 200
     

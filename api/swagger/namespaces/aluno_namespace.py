@@ -12,7 +12,7 @@ alunos_model = alunos_ns.model ("Aluno",{
 })
 
 alunos_output_model = alunos_ns.model("AlunoOutPut", {
-    "id": fields.String(required = True, description="ID Aluno."),
+    "id": fields.Integer(required = True, description="ID Aluno."),
     "nome": fields.String(required = True, description="Nome do aluno."),
     "data_nascimento": fields.String(required = True, description="Data de nascimento (DD-MM-AAAA)."),
     "nota_primeiro_semestre": fields.Float(required = True, description="Nota primeiro semestre."),
@@ -35,7 +35,7 @@ class AlunosResource(Resource):
         response, status_code = createAluno(data)
         return response, status_code
     
-@alunos_ns.route("/<int:idAluno>")
+@alunos_ns.route("/<int:id_aluno>")
 class AlunoIdResource(Resource):
     @alunos_ns.marshal_with(alunos_output_model)
     def get(self, id_aluno):
