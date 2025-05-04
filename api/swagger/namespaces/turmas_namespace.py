@@ -1,7 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from turmas.turmas_model import createTurma, getTurmaById, getTurmas, deleteTurma, updateTurma
 
-turmas_ns = Namespace("Turmas", description="Operações relacionadas a turmas")
+turmas_ns = Namespace("Turmas", description="Operações relacionadas às turmas")
 
 turmas_model = turmas_ns.model("Turmas",{
     "nome":fields.String(required = True, description = "Nome da disciplina."),
@@ -26,7 +26,7 @@ class TurmasResource(Resource):
     
     @turmas_ns.marshal_list_with(turmas_model)
     def post(self):
-        """Atualiza uma turma"""
+        """Cria uma turma nova"""
         data = turmas_ns.payload
         response, status_code = createTurma(data)
         return response, status_code
